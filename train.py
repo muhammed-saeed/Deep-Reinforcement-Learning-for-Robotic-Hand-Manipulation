@@ -6,7 +6,7 @@ from mpi4py import MPI
 from rl_modules.ddpg_agent import ddpg_agent
 import random
 import torch
-
+#import matplotlib.pyplot as plt
 """
 train the agent, the MPI part code is copy from openai baselines(https://github.com/openai/baselines/blob/master/baselines/her)
 
@@ -21,7 +21,7 @@ def get_env_params(env):
             }
     params['max_timesteps'] = env._max_episode_steps
     return params
-
+scores = []
 def launch(args):
     # create the ddpg_agent
     env = gym.make(args.env_name)
@@ -36,7 +36,7 @@ def launch(args):
     env_params = get_env_params(env)
     # create the ddpg agent to interact with the environment 
     ddpg_trainer = ddpg_agent(args, env, env_params)
-    ddpg_trainer.learn()
+    ddpg_trainer.learn(scores)
 
 if __name__ == '__main__':
     # take the configuration for the HER
@@ -46,3 +46,10 @@ if __name__ == '__main__':
     # get the params
     args = get_args()
     launch(args)
+    np.savetxt('/home/mohyahiarl/hindsight-experience-replay-master/HandManipulateEgg_v0_n_epochs_450_number_of_mpi_worker_32_n_cycles_50_n_batches_40.txt', scores, delimiter=',')
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.plot(np.arange(1, len(scores)+1), scores)
+    plt.ylabel('Score')
+    plt.xlabel('Episode #')
+    plt.show()
