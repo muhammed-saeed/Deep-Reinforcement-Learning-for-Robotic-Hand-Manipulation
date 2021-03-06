@@ -1,10 +1,3 @@
-# https://deeplearningcourses.com/c/deep-reinforcement-learning-in-python
-# https://www.udemy.com/deep-reinforcement-learning-in-python
-from __future__ import print_function, division
-from builtins import range
-# Note: you may need to update your version of future
-# sudo pip install -U future
-
 import gym
 import os
 import sys
